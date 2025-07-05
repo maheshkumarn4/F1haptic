@@ -1,51 +1,59 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>F1 Haptic Trailer (Android)</title>
+  <title>F1 Haptic Trailer (Android Version)</title>
   <style>
     body {
       font-family: sans-serif;
-      background-color: black;
-      color: white;
+      background-color: #000;
+      color: #fff;
       text-align: center;
       padding: 20px;
     }
     video {
       width: 100%;
       max-width: 800px;
-      border: 2px solid white;
+      border: 2px solid #fff;
       margin-top: 20px;
+    }
+    h1 {
+      font-size: 24px;
+    }
+    p {
+      font-size: 14px;
     }
   </style>
 </head>
 <body>
-  <h1>F1 Movie – Haptic Trailer (Simulated)</h1>
-  <p>Works best on Android with vibration enabled</p>
+  <h1>F1 Movie – Haptic Trailer</h1>
+  <p>Play the trailer and feel synchronized vibrations (best on Android)</p>
 
   <video id="f1video" controls>
-    <source src="https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/720/Big_Buck_Bunny_720_10s_1MB.mp4" type="video/mp4">
+    <source src="https://drive.google.com/uc?export=download&id=1I3hEO454rWnawmLJpnpdUtzPiOVhql8T" type="video/mp4">
     Your browser does not support the video tag.
   </video>
 
   <script>
     const video = document.getElementById("f1video");
 
-    // Simulated Apple-like haptics (in seconds)
+    // Apple-style haptic simulation events (seconds + vibration pattern)
     const hapticEvents = [
-      { time: 1, pattern: [50, 50, 50, 50] },   // Engine rev
-      { time: 3, pattern: [200] },              // Acceleration
-      { time: 5, pattern: [70] },               // Gear shift
-      { time: 7, pattern: [100, 30, 100, 30] },  // Surge
-      { time: 9, pattern: [300] }               // Final roar
+      { time: 2, pattern: [50, 50, 50, 50] },   // Engine rev
+      { time: 5, pattern: [200] },              // Speed surge
+      { time: 8, pattern: [70] },               // Gear shift
+      { time: 11, pattern: [70] },              // Gear shift
+      { time: 14, pattern: [70] },              // Gear shift
+      { time: 16, pattern: [100, 30, 100, 30] }, // Acceleration
+      { time: 20, pattern: [300] }              // Final roar
     ];
 
-    let triggered = new Set();
+    const triggered = new Set();
 
     video.addEventListener("timeupdate", () => {
       const currentTime = Math.floor(video.currentTime);
       hapticEvents.forEach(event => {
         if (currentTime === event.time && !triggered.has(event.time)) {
-          if (navigator.vibrate) {
+          if ("vibrate" in navigator) {
             navigator.vibrate(event.pattern);
             triggered.add(event.time);
           }
