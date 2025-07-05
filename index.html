@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>F1 Haptic Trailer (Android)</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: black;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+    video {
+      width: 100%;
+      max-width: 800px;
+      border: 2px solid white;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>F1 Movie – Haptic Trailer (Simulated)</h1>
+  <p>Works best on Android with vibration enabled</p>
+
+  <video id="f1video" controls>
+    <source src="https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/720/Big_Buck_Bunny_720_10s_1MB.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+  <script>
+    const video = document.getElementById("f1video");
+
+    // Simulated Apple-like haptics (in seconds)
+    const hapticEvents = [
+      { time: 1, pattern: [50, 50, 50, 50] },   // Engine rev
+      { time: 3, pattern: [200] },              // Acceleration
+      { time: 5, pattern: [70] },               // Gear shift
+      { time: 7, pattern: [100, 30, 100, 30] },  // Surge
+      { time: 9, pattern: [300] }               // Final roar
+    ];
+
+    let triggered = new Set();
+
+    video.addEventListener("timeupdate", () => {
+      const currentTime = Math.floor(video.currentTime);
+      hapticEvents.forEach(event => {
+        if (currentTime === event.time && !triggered.has(event.time)) {
+          if (navigator.vibrate) {
+            navigator.vibrate(event.pattern);
+            triggered.add(event.time);
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>
